@@ -158,6 +158,7 @@ srs_error_t SrsHybridServer::run()
     for (it = servers.begin(); it != servers.end(); ++it) {
         ISrsHybridServer* server = *it;
 
+        // set master_server
         if (!master_server) {
             master_server = dynamic_cast<SrsServerAdapter*>(server);
             if (master_server) {
@@ -165,6 +166,9 @@ srs_error_t SrsHybridServer::run()
             }
         }
 
+        // start every server (such as SrsServerAdapter SrtServerAdapter RtcServerAdapter etc.) 
+        // which is added to servers vector by calling register_server
+        // for hybridServer, mainly use SrsServerAdapter
         if ((err = server->run()) != srs_success) {
             return srs_error_wrap(err, "run server");
         }
